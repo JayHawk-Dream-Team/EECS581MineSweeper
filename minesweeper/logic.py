@@ -7,7 +7,8 @@ Functions:
 - place_mines: places mines on the board with first click safety
 - compute_neighbor_counts: calculates the number of mines surrounding each cell
 - flood_reveal: reveals cells recursively based on the clicked cell
-- is_cleared: check if all safe cells have been revealed (win condition)
+- check_win: check if all safe cells have been revealed (win condition)
+- check_loss: check if clicked celll was a mine and return information for displaying loss board
 - neighbors / neighbors_inclusive: helper functions for calculating neighbor cell coordinates
 '''
 
@@ -117,30 +118,41 @@ def flood_reveal(start: Coord, mines: Set[Coord], counts: Dict[Coord, int], reve
                     flood_reveal(neighbor, mines, counts, revealed, flagged, new_revealed)
     return new_revealed
 
+'''
+returns a boolean value representing whether the player has won or lost
+function looks at each cell on the board and checks if it is the mines or revealed sets
+if all cells belong to either set then true is returned otherwise false is returned
+'''
+def check_win(mines: Set[Coord], revealed: Set[Coord]) -> bool:
+    for row in range(10):
+        for col in range(10):
+            if (row,col) not in mines and (row,col) not in revealed:
+                return False
+    return True
+
+
+'''
+returns a dictionary containing loss info
+dictionary is structured like this 
+Keys = lost, clicked_bomb, all_mines, correct_flags, wrong_flags
+    - lost = bool: True if player hit a mine
+    - clicked_bomb = Coord | None: returns coordinate of clicked bomb on loss or none otherwise
+    - all_mines = set[Coord]: every mine location
+    - correct_flags = set[Coord]: flags that were correctly placed
+    - wrong_flags = set[Coord]: flags that were incorrectly placed
+on a loss the whole dictionary is relevant however if it isn't a loss values other than lost can be ignored
+function checks if the first click has already happened
+if so then it checks if the current click is in the mines set
+if it is in the mines set return relevant information for updating board otherwise
+otherwise return the dictionary containing lost = False and the other information can be ignored
+'''
+def check_loss(click: Coord, mines: set[Coord], flagged: set[Coord], first_click_done: bool) -> dict:
+
+    if first_click_done and click in mines:
+        return {"lost": True, "clicked_bomb": click, "all_mines": mines, "correct_flags": flagged & mines, "wrong_flags": flagged - mines}
+    else:
+        return {"lost": False, "clicked_bomb": None, "all_mines": mines, "correct_flags": set(), "wrong_flags": set()}
     
-
-
-
-def is_cleared(rows: int,
-               cols: int,
-               mines: Set[Coord],
-               revealed: Set[Coord]) -> bool:
-    """
-    Check whether all non-mine cells have been revealed.
-
-    Args:
-        rows, cols: board dimensions
-        mines: set of mine coordinates
-        revealed: set of revealed coords
-
-    Returns:
-        True if game is cleared (victory), else False.
-
-    Stub: currently always returns False.
-    """
-    return False
-
-
 '''
 print_board function written by chatgpt
 used for testing place mines, compute neighbors, and flood reveal

@@ -41,3 +41,18 @@ minesweeper/
 
 ### 6. References
 Course project for EECS 581. Original requirements: https://people.eecs.ku.edu/~saiedian/581/Proj/proj1
+
+### 7. Beautiful Pictures (Gameplay Screenshots) Initial Verion
+
+#### Verion as of 18 September, 2025
+<img width="472" height="540" alt="Screenshot 2025-09-18 at 10 41 44 AM" src="https://github.com/user-attachments/assets/83c7caba-d416-4577-8e42-e1d738353530" />
+<img width="472" height="540" alt="Screenshot 2025-09-18 at 10 41 57 AM" src="https://github.com/user-attachments/assets/39c6480c-eb29-4245-968a-94bfa021d7cb" />
+
+
+#### Initial Verion
+<img width="432" height="460" alt="Screenshot 2025-09-18 at 10 36 02 AM" src="https://github.com/user-attachments/assets/ada7d8cd-4803-4b08-a6b6-1315e40f7813" />
+<img width="432" height="460" alt="Screenshot 2025-09-18 at 10 36 06 AM" src="https://github.com/user-attachments/assets/e19da06b-e40f-4707-9cf1-1d648a039498" />
+
+
+
+

@@ -1,8 +1,8 @@
 '''
 Game Manager
 Manages the state of the game and calls the other .py files that were written by team mates
-Author: Carlos Mbnedera
-Last modified: 2025-09-17
+Author: Carlos Mbnedera, Mahdi Essawi
+Last modified: 2025-09-18
 '''
 
 import pygame
@@ -62,9 +62,12 @@ class GameManager:
         self.board_width = width
         self.board_height = height
         self.num_mines = num_mines
-        self.cell_size = cell_size
-        self.screen_width = width * cell_size
-        self.screen_height = height * cell_size
+        self.cell_size = cell_size        
+        self.padding_right = 40
+        self.padding_bottom = 80
+        self.screen_width = width * cell_size + self.padding_right
+        self.screen_height = height * cell_size + self.padding_bottom
+
         pygame.init()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Minesweeper")

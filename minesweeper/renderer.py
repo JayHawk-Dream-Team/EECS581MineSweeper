@@ -1,3 +1,7 @@
+"""
+Author: Blake Ebner, Mahdi Essawi
+Last modified: 09/18/2025
+"""
 import pygame
 import os
 
@@ -7,7 +11,7 @@ class Renderer:
         self.screen = screen
         self.cell_size = cell_size
         self.font = pygame.font.SysFont("arial", 20)
-
+        self.font_small = pygame.font.Font(None, 14)
         img_path = "images"
         self.images = {
             "covered": pygame.image.load(os.path.join(img_path, "empty-block.png")),
@@ -51,7 +55,19 @@ class Renderer:
 
                 if getattr(cell, "wrong_flag", False):
                     self.screen.blit(self.images["wrong_flag"], (x, y))
-
+        # column labels (A-J)
+        for x in range(10):
+            label = chr(ord('A') + x)
+            label_surface = self.font_small.render(label, True, (0,0,0))
+            self.screen.blit(label_surface, (x * self.cell_size + self.cell_size // 2 - 5, 
+                                           board.height * self.cell_size + 5))
+        # row labels (1-10)
+        for y in range(10):
+            label = str(y + 1)
+            label_surface = self.font_small.render(label, True, (0,0,0))
+            self.screen.blit(label_surface, (board.width * self.cell_size + 5, 
+                                           y * self.cell_size + self.cell_size // 2 - 5))
+        
     def render_game_over(self, won: bool):
         #show the outcome of the game 
         msg = "You win" if won else "Game over"

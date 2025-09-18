@@ -1,7 +1,7 @@
 '''
 main.py
 Main Entry Point for Game that invokes Game_Manager.py
-Author: Carlos Mbnedera
+Author: Carlos Mbnedera, Mahdi Essawi
 Last modified: 2025-09-17
 '''
 

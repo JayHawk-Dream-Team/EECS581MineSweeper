@@ -12,6 +12,7 @@ class Renderer:
         self.cell_size = cell_size
         self.font = pygame.font.SysFont("arial", 20)
         self.font_small = pygame.font.Font(None, 14)
+        self.font_flag_counter = pygame.font.SysFont("arial", 15, bold=True)
         img_path = "images"
         self.images = {
             "covered": pygame.image.load(os.path.join(img_path, "empty-block.png")),
@@ -67,7 +68,13 @@ class Renderer:
             label_surface = self.font_small.render(label, True, (0,0,0))
             self.screen.blit(label_surface, (board.width * self.cell_size + 5, 
                                            y * self.cell_size + self.cell_size // 2 - 5))
-        
+        # flag counter
+        remaining_flags = board._core.mines_remaining_estimate()
+        flag_text = f"Flags: {remaining_flags}"
+        flag_color = (255,0,0) if remaining_flags < 0 else (0,100,0)
+        flage_surface = self.font_flag_counter.render(flag_text, True, flag_color)
+        self.screen.blit(flage_surface, (10, board.height * self.cell_size + 35))
+
     def render_game_over(self, won: bool):
         #show the outcome of the game 
         msg = "You win" if won else "Game over"

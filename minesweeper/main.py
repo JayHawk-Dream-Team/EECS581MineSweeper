@@ -1,3 +1,10 @@
+'''
+main.py
+Main Entry Point for Game that invokes Game_Manager.py
+Author: Carlos Mbnedera
+Last modified: 2025-09-17
+'''
+
 import argparse
 import os
 from game_manager import GameManager

@@ -1,3 +1,10 @@
+'''
+Game Manager
+Manages the state of the game and calls the other .py files that were written by team mates
+Author: Carlos Mbnedera
+Last modified: 2025-09-17
+'''
+
 import pygame
 import sys
 import os
@@ -6,7 +13,6 @@ import shutil
 from board import Board, GameState as BoardGameState
 from input_handler import InputHandler
 from renderer import Renderer
-
 
 class BoardAdapter:
 
@@ -113,7 +119,6 @@ class GameManager:
     def _process_game_action(self, action):
         """
         Process game actions from input handler
-        Args: action: Dictionary containing action type and parameters
         """
         if not action:
             return
@@ -153,7 +158,7 @@ class GameManager:
         This method contains the core game loop that handles input,
         updates game state, and renders the game.
         """
-        print("Minesweeper: LMB=reveal RMB=flag R=restart ESC=quit")
+        print("The Greatest Game of Minesweeper: LMB=reveal RMB=flag R=restart ESC=quit")
         while self.running:
             self.handle_input()
             self.update()
@@ -166,11 +171,7 @@ class GameManager:
         print("Shutting down Minesweeper...")
         pygame.quit()
         sys.exit()
-    
-    # Accessors removed for MVP
 
-
-# Example usage and testing
 if __name__ == "__main__":
     # Create and run a game instance for testing
     game = GameManager(width=10, height=10, num_mines=15)

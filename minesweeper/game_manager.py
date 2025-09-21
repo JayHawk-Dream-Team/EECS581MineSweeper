@@ -3,6 +3,16 @@ Game Manager
 Manages the state of the game and calls the other .py files that were written by team mates
 Author: Carlos Mbnedera, Mahdi Essawi
 Last modified: 2025-09-18
+
+Classes, Inputs and Outputs
+
+BoardAdapter: wraps Board for renderer (width/height, get_cell, reveal/flag, won/lost)
+GameManager: pygame loop (init -> input -> update -> render -> quit)
+Inputs: width:int, height:int, num_mines:int, cell_size:int (pixels)
+Outputs: visuals
+
+Sources: (Carlos) Pygame Example Implementations of Minesweeper 
+Multiple tutorials found at https://www.pygame.org/
 '''
 
 import pygame

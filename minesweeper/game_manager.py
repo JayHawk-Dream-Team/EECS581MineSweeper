@@ -209,8 +209,10 @@ class GameManager:
         while self.running:
             if self.turn == "human":
               self.handle_input()
+              self.turn = "bot"
             else:
               self._bot_turn()
+              self.turn = "human"
             self.update()
             self.render()
             self.clock.tick(60)

@@ -25,7 +25,6 @@ from input_handler import InputHandler
 from renderer import Renderer
 
 class BoardAdapter:
-
     def __init__(self, core_board: Board):
         self._core = core_board
         # Provide width/height attributes the renderer expects
@@ -67,12 +66,13 @@ class BoardAdapter:
 class GameManager:
     """Manager: input -> board mutate -> render."""
     
-    def __init__(self, width: int = 16, height: int = 16, num_mines: int = 40, 
-                 cell_size: int = 32):
+    def __init__(self, width: int, height: int , num_mines: int, 
+                 cell_size: int):
+        self.turn = "human" # Change this to const where we can have human/bot turn
         self.board_width = width
         self.board_height = height
         self.num_mines = num_mines
-        self.cell_size = cell_size        
+        self.cell_size = cell_size
         self.padding_right = 40
         self.padding_bottom = 80
         self.screen_width = width * cell_size + self.padding_right
@@ -92,11 +92,11 @@ class GameManager:
         expected = os.path.join(images_dir, "bomb-at-clicked-spot.png")
         alt = os.path.join(images_dir, "bomb-at-clicked-block.png")
         if not os.path.exists(expected) and os.path.exists(alt):
-            try:
-                shutil.copyfile(alt, expected)
-            except Exception:
-                #renderer may still fail but we tried
-                pass
+          try:
+            shutil.copyfile(alt, expected)
+          except Exception:
+            #renderer may still fail but we tried
+            pass
 
         core_board = Board(self.board_height, self.board_width, self.num_mines)
         self.board = BoardAdapter(core_board)
@@ -122,12 +122,21 @@ class GameManager:
                     self.start_new_game()
                 elif event.key == pygame.K_ESCAPE:
                     self.running = False
-        
+
+        # Might not need lost/win check cause it is also done after so just added for robustness for now        
+        if self.turn != "human" or self.board.lost() or self.board.won():
+            return
+
         # Delegate input handling to InputHandler
         action = self.input_handler.handle_events(events)
         
         if action and not (self.board.lost() or self.board.won()):
             self._process_game_action(action)
+            # Added mainly for idea of "turn-switching" will probably change up a bit when it comes to real implementation
+            if self.turn == "human":
+                self.turn = "bot"
+            else:
+                self.turn = "human"
     
     def _process_game_action(self, action):
         """

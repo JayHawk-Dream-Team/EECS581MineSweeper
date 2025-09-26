@@ -162,6 +162,9 @@ class GameManager:
             self.board.toggle_flag(x, y)
 
     def _bot_turn(self):
+        if self.board.is_game_over or self.board.is_game_won:
+            self.running = False
+            return
         match self.difficulty:
             case "ez":
                 self.ez_turn()
@@ -205,6 +208,7 @@ class GameManager:
               self.update()
               self.render()
               self.clock.tick(60)
+            self.quit()
 
         while self.running:
             if self.turn == "human":

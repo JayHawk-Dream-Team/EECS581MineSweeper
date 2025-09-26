@@ -65,10 +65,18 @@ class BoardAdapter:
 
 class GameManager:
     """Manager: input -> board mutate -> render."""
-    
     def __init__(self, width: int, height: int , num_mines: int, 
-                 cell_size: int):
-        self.turn = "human" # Change this to const where we can have human/bot turn
+                 cell_size: int, turn: str="human", mode: str="interactive", difficulty: str="ez"):
+        """
+          Three newly added variables used to track turn/mode/difficulty, currently stored as strs as shown
+          however this can change just used for easy placeholders for now
+          turn: str "human" or "bot"
+          mode: str "interactive" or "noninteractive"
+          difficulty: str "ez", "med", "hard"
+        """
+        self.turn = turn
+        self.mode = mode
+        self.difficulty = difficulty
         self.board_width = width
         self.board_height = height
         self.num_mines = num_mines
@@ -132,15 +140,14 @@ class GameManager:
         
         if action and not (self.board.lost() or self.board.won()):
             self._process_game_action(action)
-            # Added mainly for idea of "turn-switching" will probably change up a bit when it comes to real implementation
-            if self.turn == "human":
-                self.turn = "bot"
-            else:
-                self.turn = "human"
     
     def _process_game_action(self, action):
         """
         Process game actions from input handler
+        Can call directly to simulate a flag/reveal
+        Action: dict: { 'type': 'reveal'|'flag', 'x': int, 'y': int } or None
+          x and y are the grid col/row stored as an int, a player gets called to
+          handle_input and that turns their click into the x/y bit a bot would pass this value directly into this
         """
         if not action:
             return
@@ -153,6 +160,17 @@ class GameManager:
             self.board.reveal_cell(x, y)
         elif action_type == 'flag':
             self.board.toggle_flag(x, y)
+
+    def _bot_turn(self):
+        match self.difficulty:
+            case "ez":
+                self.ez_turn()
+            case "med":
+                self.med_turn()
+            case "hard":
+                self.hard_turn()
+            case _:
+                self.running = False
     
     def update(self):
         pass  
@@ -181,8 +199,18 @@ class GameManager:
         updates game state, and renders the game.
         """
         print("The Greatest Game of Minesweeper: LMB=reveal RMB=flag R=restart ESC=quit")
+        if self.mode == "noninteractive":
+            while self.running:
+              self._bot_turn()
+              self.update()
+              self.render()
+              self.clock.tick(60)
+
         while self.running:
-            self.handle_input()
+            if self.turn == "human":
+              self.handle_input()
+            else:
+              self._bot_turn()
             self.update()
             self.render()
             self.clock.tick(60)
